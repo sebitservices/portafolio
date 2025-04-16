@@ -125,6 +125,40 @@ function About() {
             <div className="relative border-l-2 border-gray-200 dark:border-gray-700 pl-8 pb-8">
               <div className="absolute -left-2.5 top-0 w-5 h-5 rounded-full bg-brand-500"></div>
               
+              {/* SebitServices */}
+              <div className="mb-8">
+                <h4 className="text-xl font-semibold text-gray-800 dark:text-gray-200">
+                  {language === 'es' ? 'Fundador y Desarrollador Full Stack en SebitServices' : 'Founder and Full Stack Developer at SebitServices'}
+                </h4>
+                <p className="text-brand-500 dark:text-brand-400 font-medium">
+                  {language === 'es' ? '2023 - Presente' : '2023 - Present'}
+                </p>
+                <div className="mt-4 text-gray-600 dark:text-gray-400 space-y-3">
+                  <p>
+                    {language === 'es' 
+                      ? 'Fundé SebitServices, una empresa especializada en desarrollo web y soluciones digitales. Lidero el desarrollo de proyectos y la implementación de soluciones tecnológicas innovadoras para nuestros clientes.'
+                      : 'I founded SebitServices, a company specialized in web development and digital solutions. I lead project development and implementation of innovative technological solutions for our clients.'}
+                  </p>
+                  <ul className="list-disc list-inside space-y-1">
+                    <li>{language === 'es' 
+                      ? 'Desarrollo de aplicaciones web personalizadas y sitios corporativos'
+                      : 'Development of custom web applications and corporate websites'}
+                    </li>
+                    <li>{language === 'es' 
+                      ? 'Implementación de soluciones e-commerce y sistemas de gestión'
+                      : 'Implementation of e-commerce solutions and management systems'}
+                    </li>
+                    <li>{language === 'es' 
+                      ? 'Consultoría técnica y optimización de procesos digitales'
+                      : 'Technical consulting and digital process optimization'}
+                    </li>
+                  </ul>
+                </div>
+              </div>
+
+              {/* Experiencia previa */}
+              <div className="absolute -left-2.5 top-64 w-5 h-5 rounded-full bg-brand-500"></div>
+              
               <div className="mb-8">
                 <h4 className="text-xl font-semibold text-gray-800 dark:text-gray-200">
                   {language === 'es' ? 'Desarrollador Full Stack' : 'Full Stack Developer'}

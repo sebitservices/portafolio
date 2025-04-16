@@ -1,12 +1,28 @@
 import { useEffect, useRef, useState } from 'react';
 import { useLanguage } from './Navbar';
+// Iconos de categorías
+import { FaCode, FaServer, FaTools } from 'react-icons/fa';
+// Iconos de habilidades de frontend
+import { FaHtml5, FaCss3Alt, FaJs, FaReact, FaAngular } from 'react-icons/fa';
+import { SiTypescript, SiTailwindcss } from 'react-icons/si';
+// Iconos de habilidades de backend
+import { FaNodeJs } from 'react-icons/fa';
+import { SiExpress, SiMongodb, SiMysql, SiGraphql } from 'react-icons/si';
+import { MdApi } from 'react-icons/md';
+// Iconos de herramientas y otros
+import { FaGitAlt, FaDocker, FaAws, FaCogs, FaMobileAlt, FaPaintBrush } from 'react-icons/fa';
+// Iconos de metodologías
+import { FaSyncAlt, FaVial, FaCode as FaCleanCode, FaRocket, FaUsers, FaClipboardList } from 'react-icons/fa';
+// Iconos para banderas
+import { FaGlobeAmericas, FaLanguage } from 'react-icons/fa';
 
 function Skills() {
   const { language, texts } = useLanguage();
   const sectionRef = useRef(null);
   const [activeCategory, setActiveCategory] = useState('frontend');
+  const [hoveredSkill, setHoveredSkill] = useState(null);
   
-  // Efecto para animaciones de aparición al hacer scroll
+  // Efecto para animaciones al scroll
   useEffect(() => {
     if (!sectionRef.current) return;
     
@@ -14,34 +30,22 @@ function Skills() {
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
-            // Cuando la sección es visible, activar animaciones
-            const animatedElements = sectionRef.current.querySelectorAll('.animate-on-scroll');
-            animatedElements.forEach((el, index) => {
-              // Añadir delay escalonado para cada elemento
-              setTimeout(() => {
-                el.classList.add('animate-fade-in');
-                el.style.opacity = 1;
-              }, 100 * index);
-            });
-            
-            // Desactivar observer después de animar
-            observer.unobserve(entry.target);
+            entry.target.classList.add('show');
           }
         });
       },
-      { threshold: 0.1 } // 10% de la sección visible para activar
+      { threshold: 0.15 }
     );
     
-    observer.observe(sectionRef.current);
+    const elements = sectionRef.current.querySelectorAll('.animate-on-scroll');
+    elements.forEach((el) => observer.observe(el));
     
     return () => {
-      if (sectionRef.current) {
-        observer.unobserve(sectionRef.current);
-      }
+      elements.forEach((el) => observer.unobserve(el));
     };
   }, []);
 
-  // Categorías de habilidades
+  // Actualizar las categorías con colores más sutiles
   const skillCategories = [
     {
       id: 'frontend',
@@ -49,65 +53,68 @@ function Skills() {
         es: 'Frontend',
         en: 'Frontend'
       },
-      icon: (
-        <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16l-4-4m0 0l4-4m-4 4h18" />
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 12h18" />
-        </svg>
-      ),
+      icon: <FaCode />,
+      color: '#4F46E5',
+      bgColor: '#4F46E510',
       skills: [
         { 
           name: 'HTML5/CSS3', 
           level: 95, 
-          logo: '/skills/html5.svg',
+          icon: <FaHtml5 />,
+          color: '#E34F26',
           description: {
-            es: 'Estructuración semántica y estilos avanzados',
-            en: 'Semantic structuring and advanced styling'
+            es: 'Estructura semántica, Flexbox, Grid, Animaciones',
+            en: 'Semantic structure, Flexbox, Grid, Animations'
           }
         },
         { 
           name: 'JavaScript', 
           level: 90, 
-          logo: '/skills/javascript.svg',
+          icon: <FaJs />,
+          color: '#F7DF1E',
           description: {
-            es: 'ES6+, asincronía, módulos',
-            en: 'ES6+, async/await, modules'
+            es: 'ES6+, Promesas, Async/Await, DOM, Fetch API',
+            en: 'ES6+, Promises, Async/Await, DOM, Fetch API'
           }
         },
         { 
           name: 'TypeScript', 
           level: 85, 
-          logo: '/skills/typescript.svg',
+          icon: <SiTypescript />,
+          color: '#3178C6',
           description: {
-            es: 'Tipado fuerte, interfaces, generics',
-            en: 'Strong typing, interfaces, generics'
+            es: 'Interfaces, Types, Generics, Decorators',
+            en: 'Interfaces, Types, Generics, Decorators'
           }
         },
         { 
           name: 'React', 
           level: 88, 
-          logo: '/skills/react.svg',
+          icon: <FaReact />,
+          color: '#61DAFB',
           description: {
-            es: 'Hooks, Context API, Redux',
-            en: 'Hooks, Context API, Redux'
+            es: 'Hooks, Context, Redux, Next.js, SSR',
+            en: 'Hooks, Context, Redux, Next.js, SSR'
           }
         },
         { 
           name: 'Angular', 
           level: 82, 
-          logo: '/skills/angular.svg',
+          icon: <FaAngular />,
+          color: '#DD0031',
           description: {
-            es: 'Servicios, RxJS, módulos',
-            en: 'Services, RxJS, modules'
+            es: 'Componentes, Servicios, RxJS, NgRx',
+            en: 'Components, Services, RxJS, NgRx'
           }
         },
         { 
           name: 'Tailwind CSS', 
           level: 90, 
-          logo: '/skills/tailwind.svg',
+          icon: <SiTailwindcss />,
+          color: '#06B6D4',
           description: {
-            es: 'Diseño responsive, temas',
-            en: 'Responsive design, theming'
+            es: 'Diseño responsive, Componentes, Temas',
+            en: 'Responsive design, Components, Themes'
           }
         }
       ]
@@ -118,64 +125,68 @@ function Skills() {
         es: 'Backend',
         en: 'Backend'
       },
-      icon: (
-        <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 12h14M5 12a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v4a2 2 0 01-2 2M5 12a2 2 0 00-2 2v4a2 2 0 002 2h14a2 2 0 002-2v-4a2 2 0 00-2-2m-2-4h.01M17 16h.01" />
-        </svg>
-      ),
+      icon: <FaServer />,
+      color: '#16A34A',
+      bgColor: '#16A34A10',
       skills: [
         { 
           name: 'Node.js', 
           level: 85, 
-          logo: '/skills/nodejs.svg',
+          icon: <FaNodeJs />,
+          color: '#339933',
           description: {
-            es: 'API RESTful, microservicios',
-            en: 'RESTful APIs, microservices'
+            es: 'API RESTful, Microservicios, Streams',
+            en: 'RESTful APIs, Microservices, Streams'
           }
         },
         { 
           name: 'Express.js', 
           level: 82, 
-          logo: '/skills/express.svg',
+          icon: <SiExpress />,
+          color: '#000000',
           description: {
-            es: 'Middleware, enrutamiento',
-            en: 'Middleware, routing'
+            es: 'Middleware, Routing, Autenticación',
+            en: 'Middleware, Routing, Authentication'
           }
         },
         { 
           name: 'MongoDB', 
           level: 80, 
-          logo: '/skills/mongodb.svg',
+          icon: <SiMongodb />,
+          color: '#47A248',
           description: {
-            es: 'Agregaciones, indices',
-            en: 'Aggregations, indexes'
+            es: 'Esquemas, Agregaciones, Índices',
+            en: 'Schemas, Aggregations, Indexes'
           }
         },
         { 
           name: 'MySQL', 
           level: 78, 
-          logo: '/skills/mysql.svg',
+          icon: <SiMysql />,
+          color: '#4479A1',
           description: {
-            es: 'Optimización de consultas',
-            en: 'Query optimization'
+            es: 'Relaciones, Joins, Optimización',
+            en: 'Relationships, Joins, Optimization'
           }
         },
         { 
           name: 'REST APIs', 
           level: 90, 
-          logo: '/skills/api.svg',
+          icon: <MdApi />,
+          color: '#4C51BF',
           description: {
-            es: 'Diseño RESTful, seguridad',
-            en: 'RESTful design, security'
+            es: 'CRUD, Autenticación, JWT, OAuth',
+            en: 'CRUD, Authentication, JWT, OAuth'
           }
         },
         { 
           name: 'GraphQL', 
           level: 75, 
-          logo: '/skills/graphql.svg',
+          icon: <SiGraphql />,
+          color: '#E10098',
           description: {
-            es: 'Schemas, resolvers',
-            en: 'Schemas, resolvers'
+            es: 'Queries, Mutations, Resolvers',
+            en: 'Queries, Mutations, Resolvers'
           }
         }
       ]
@@ -183,332 +194,357 @@ function Skills() {
     {
       id: 'tools',
       title: {
-        es: 'Herramientas y Otros',
-        en: 'Tools & Others'
+        es: 'Herramientas',
+        en: 'Tools'
       },
-      icon: (
-        <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-        </svg>
-      ),
+      icon: <FaTools />,
+      color: '#EA580C',
+      bgColor: '#EA580C10',
       skills: [
         { 
           name: 'Git', 
           level: 88, 
-          logo: '/skills/git.svg',
+          icon: <FaGitAlt />,
+          color: '#F05032',
           description: {
-            es: 'Control de versiones, workflows',
-            en: 'Version control, workflows'
+            es: 'Branches, Merge, Rebase, CI/CD',
+            en: 'Branches, Merge, Rebase, CI/CD'
           }
         },
         { 
           name: 'Docker', 
           level: 75, 
-          logo: '/skills/docker.svg',
+          icon: <FaDocker />,
+          color: '#2496ED',
           description: {
-            es: 'Contenedores, orquestación',
-            en: 'Containers, orchestration'
+            es: 'Contenedores, Compose, Orquestación',
+            en: 'Containers, Compose, Orchestration'
           }
         },
         { 
           name: 'AWS', 
           level: 70, 
-          logo: '/skills/aws.svg',
+          icon: <FaAws />,
+          color: '#FF9900',
           description: {
-            es: 'EC2, S3, Lambda',
-            en: 'EC2, S3, Lambda'
+            es: 'EC2, S3, Lambda, Cloudfront',
+            en: 'EC2, S3, Lambda, Cloudfront'
           }
         },
         { 
           name: 'CI/CD', 
           level: 78, 
-          logo: '/skills/cicd.svg',
+          icon: <FaCogs />,
+          color: '#43A047',
           description: {
-            es: 'Integración y despliegue continuo',
-            en: 'Continuous integration/deployment'
+            es: 'GitHub Actions, GitLab CI, Jenkins',
+            en: 'GitHub Actions, GitLab CI, Jenkins'
           }
         },
         { 
           name: 'Responsive Design', 
           level: 92, 
-          logo: '/skills/responsive.svg',
+          icon: <FaMobileAlt />,
+          color: '#9C27B0',
           description: {
-            es: 'Mobile-first, accesibilidad',
-            en: 'Mobile-first, accessibility'
+            es: 'Mobile First, Media Queries, Flexbox',
+            en: 'Mobile First, Media Queries, Flexbox'
           }
         },
         { 
           name: 'UX/UI', 
           level: 85, 
-          logo: '/skills/uxui.svg',
+          icon: <FaPaintBrush />,
+          color: '#EC407A',
           description: {
-            es: 'Experiencia de usuario, interfaces',
-            en: 'User experience, interfaces'
+            es: 'Figma, Adobe XD, Principios UX',
+            en: 'Figma, Adobe XD, UX Principles'
           }
         }
       ]
     }
   ];
 
-  // Obtener la categoría activa
+  // Obtener la categoría activa y sus habilidades
   const activeSkills = skillCategories.find(cat => cat.id === activeCategory)?.skills || [];
+  const activeCategoryData = skillCategories.find(cat => cat.id === activeCategory);
 
-  // Habilidades adicionales para mostrar
+  // Habilidades adicionales
   const additionalSkills = [
-    'SEO', 'Marketing Digital', 'Figma', 'Adobe XD', 'Webpack', 
-    'Jest', 'Redux', 'RxJS', 'Sass', 'Material UI', 'Bootstrap',
-    'Firebase', 'NextJS', 'Vercel', 'Netlify', 'GitLab CI'
+    { name: 'SEO', icon: <FaGlobeAmericas />, color: '#4285F4' },
+    { name: 'Marketing Digital', icon: <FaLanguage />, color: '#34A853' },
+    { name: 'Figma', icon: <FaPaintBrush />, color: '#F24E1E' }, 
+    { name: 'Adobe XD', icon: <FaPaintBrush />, color: '#FF61F6' }, 
+    { name: 'Webpack', icon: <FaCogs />, color: '#8DD6F9' },
+    { name: 'Jest', icon: <FaVial />, color: '#C21325' }, 
+    { name: 'Redux', icon: <FaReact />, color: '#764ABC' }, 
+    { name: 'RxJS', icon: <FaSyncAlt />, color: '#B7178C' }, 
+    { name: 'Sass', icon: <FaCss3Alt />, color: '#CC6699' }, 
+    { name: 'Material UI', icon: <FaReact />, color: '#0081CB' }, 
+    { name: 'Bootstrap', icon: <FaCode />, color: '#7952B3' },
+    { name: 'Firebase', icon: <FaServer />, color: '#FFCA28' }, 
+    { name: 'NextJS', icon: <FaReact />, color: '#000000' }, 
+    { name: 'Vercel', icon: <FaRocket />, color: '#000000' }, 
+    { name: 'Netlify', icon: <FaRocket />, color: '#00C7B7' }, 
+    { name: 'GitLab CI', icon: <FaCogs />, color: '#FCA121' }
+  ];
+
+  // Metodologías
+  const methodologies = [
+    { name: language === 'es' ? 'Metodologías Ágiles' : 'Agile Methodologies', icon: <FaSyncAlt />, color: '#3B82F6' },
+    { name: 'Scrum', icon: <FaUsers />, color: '#10B981' },
+    { name: 'Kanban', icon: <FaClipboardList />, color: '#8B5CF6' },
+    { name: language === 'es' ? 'Desarrollo TDD' : 'TDD Development', icon: <FaVial />, color: '#F59E0B' },
+    { name: language === 'es' ? 'Código Limpio' : 'Clean Code', icon: <FaCleanCode />, color: '#06B6D4' },
+    { name: language === 'es' ? 'Integración Continua' : 'Continuous Integration', icon: <FaRocket />, color: '#EC4899' }
+  ];
+
+  // Idiomas
+  const languages = [
+    { 
+      name: language === 'es' ? 'Español' : 'Spanish',
+      code: 'ES',
+      level: 100,
+      status: language === 'es' ? 'Nativo' : 'Native',
+      gradient: 'from-red-500 to-yellow-500'
+    },
+    { 
+      name: language === 'es' ? 'Inglés' : 'English',
+      code: 'EN',
+      level: 85,
+      status: language === 'es' ? 'Profesional' : 'Professional',
+      gradient: 'from-blue-500 to-red-500'
+    }
   ];
 
   return (
     <section 
       id="habilidades" 
       ref={sectionRef}
-      className="py-24 relative overflow-hidden bg-gradient-to-b from-gray-50 to-white dark:from-gray-900 dark:to-gray-800"
+      className="py-24 bg-gray-100 dark:bg-gray-900"
     >
-      {/* Decoración de fondo */}
-      <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute top-20 -right-40 w-80 h-80 bg-gradient-to-br from-brand-300/10 to-purple-300/10 rounded-full blur-3xl"></div>
-        <div className="absolute bottom-20 -left-40 w-80 h-80 bg-gradient-to-tr from-brand-300/10 to-blue-300/10 rounded-full blur-3xl"></div>
-        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full h-1/2 max-w-3xl bg-gradient-to-r from-transparent via-brand-400/5 to-transparent rounded-full blur-3xl"></div>
-      </div>
-      
-      <div className="container max-w-6xl mx-auto px-6 relative z-10">
-        {/* Encabezado */}
-        <div className="text-center mb-16 animate-on-scroll opacity-0 transition-all duration-700">
-          <span className="inline-block text-sm font-semibold text-brand-500 dark:text-brand-300 uppercase tracking-wider mb-2">
-            {language === 'es' ? 'Competencias Técnicas' : 'Technical Expertise'}
-          </span>
-          <h2 className="inline-block text-4xl md:text-5xl font-bold relative">
-            <span className="bg-gradient-to-r from-brand-400 to-brand-600 bg-clip-text text-transparent">
-              {language === 'es' ? 'Mis Habilidades' : 'My Skills'}
-            </span>
+      <div className="container max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Encabezado de sección */}
+        <div className="text-center mb-16">
+          <h6 className="text-sm font-semibold tracking-wider uppercase text-brand-500 dark:text-brand-400 mb-3 animate-on-scroll opacity-0">
+            {language === 'es' ? 'Competencias Profesionales' : 'Professional Skills'}
+          </h6>
+          <h2 className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-6 animate-on-scroll opacity-0">
+            {language === 'es' ? 'Habilidades Técnicas' : 'Technical Skills'}
           </h2>
-          <div className="mt-2 animate-on-scroll opacity-0 transition-all duration-700 delay-100">
-            <div className="h-1 w-0 bg-gradient-to-r from-brand-400 to-brand-600 mx-auto rounded-full transition-all duration-1000 animate-width"></div>
-          </div>
-          <p className="mt-4 text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto animate-on-scroll opacity-0 transition-all duration-700 delay-200">
+          <div className="w-24 h-1 bg-brand-500 mx-auto rounded-full mb-6 animate-on-scroll opacity-0"></div>
+          <p className="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto animate-on-scroll opacity-0">
             {language === 'es' 
               ? 'Tecnologías y herramientas que domino para crear soluciones digitales excepcionales.' 
               : 'Technologies and tools I master to create exceptional digital solutions.'}
           </p>
         </div>
-        
+
         {/* Navegación de categorías */}
-        <div className="flex justify-center mb-12 animate-on-scroll opacity-0 transition-all duration-700 delay-300">
-          <div className="inline-flex p-1 rounded-xl bg-gray-100 dark:bg-gray-800 shadow-inner">
+        <div className="flex justify-center mb-12">
+          <div className="inline-flex p-1 rounded-xl bg-white dark:bg-gray-800 shadow-md">
             {skillCategories.map((category) => (
               <button
                 key={category.id}
                 onClick={() => setActiveCategory(category.id)}
-                className={`flex items-center px-4 py-2 rounded-xl text-sm md:text-base font-medium transition-all duration-300 ${
+                className={`flex items-center px-6 py-3 rounded-lg text-sm font-medium transition-all duration-300 ${
                   activeCategory === category.id 
-                    ? 'bg-white dark:bg-gray-700 text-brand-500 dark:text-brand-300 shadow-md' 
-                    : 'text-gray-700 dark:text-gray-300 hover:text-brand-500 dark:hover:text-brand-300'
+                    ? 'text-white shadow-md scale-105' 
+                    : 'text-gray-600 dark:text-gray-300 hover:text-brand-500 dark:hover:text-brand-400'
                 }`}
+                style={{ 
+                  backgroundColor: activeCategory === category.id ? category.color : 'transparent'
+                }}
               >
-                <span className="mr-2">{category.icon}</span>
+                <span className={`mr-2 text-lg`}>{category.icon}</span>
                 {category.title[language]}
               </button>
             ))}
           </div>
         </div>
-        
-        {/* Visualización de habilidades principales - NUEVO DISEÑO */}
-        <div className="mb-16">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {activeSkills.map((skill, index) => (
-              <div 
-                key={skill.name}
-                className="animate-on-scroll opacity-0 transition-all duration-500"
-                style={{ transitionDelay: `${300 + (index * 50)}ms` }}
-              >
-                <div className="group relative bg-white dark:bg-gray-800 rounded-xl border border-gray-100 dark:border-gray-700 shadow-md hover:shadow-lg transition-all duration-300 p-6 h-full overflow-hidden">
-                  {/* Fondo con gradiente sutil */}
-                  <div className="absolute inset-0 bg-gradient-to-br from-gray-50 to-white dark:from-gray-800 dark:to-gray-750 rounded-xl"></div>
-                  
-                  {/* Línea decorativa superior */}
-                  <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-brand-400 to-brand-600"></div>
-                  
-                  {/* Contenido */}
-                  <div className="relative z-10">
-                    <div className="flex items-center justify-between mb-4">
-                      <div className="flex items-center space-x-3">
-                        {/* Placeholder de imagen con un círculo del color de fondo */}
-                        <div className="flex-shrink-0 w-12 h-12 rounded-lg bg-gray-100 dark:bg-gray-700 flex items-center justify-center">
-                          <div className="text-brand-500 dark:text-brand-300 text-lg font-bold">
-                            {skill.name.substring(0, 2)}
-                          </div>
-                        </div>
-                        <h3 className="text-xl font-bold text-gray-900 dark:text-white">{skill.name}</h3>
-                      </div>
-                      <span className="px-3 py-1 rounded-full text-sm font-bold bg-brand-50 dark:bg-gray-700 text-brand-600 dark:text-brand-300">
-                        {skill.level}%
-                      </span>
+
+        {/* Grid de habilidades principales */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-16">
+          {activeSkills.map((skill, index) => (
+            <div 
+              key={skill.name}
+              className="animate-on-scroll opacity-0 transition-all duration-500"
+              style={{ 
+                transitionDelay: `${100 + (index * 50)}ms`,
+                animation: `fadeIn 0.5s ease-out ${index * 0.1}s forwards`
+              }}
+              onMouseEnter={() => setHoveredSkill(skill.name)}
+              onMouseLeave={() => setHoveredSkill(null)}
+            >
+              <div className={`group relative bg-white dark:bg-gray-800 rounded-xl p-6 transition-all duration-300 ${
+                hoveredSkill === skill.name 
+                  ? 'shadow-lg -translate-y-1' 
+                  : 'shadow-md hover:shadow-lg hover:-translate-y-0.5'
+              }`}>
+                <div className="absolute top-0 left-0 w-full h-1 bg-brand-500 rounded-t-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                
+                <div className="flex items-start justify-between mb-4">
+                  <div className="flex items-center">
+                    <div 
+                      className="w-12 h-12 flex items-center justify-center rounded-lg transition-all duration-300 group-hover:scale-110"
+                      style={{ 
+                        color: skill.color,
+                        backgroundColor: `${skill.color}10`
+                      }}
+                    >
+                      <span className="text-2xl">{skill.icon}</span>
                     </div>
-                    
-                    <p className="text-gray-600 dark:text-gray-400 mb-4 text-sm">
-                      {skill.description[language]}
-                    </p>
-                    
-                    {/* Barra de progreso renovada */}
-                    <div className="h-1.5 w-full bg-gray-100 dark:bg-gray-700 rounded-full overflow-hidden relative mb-1">
-                      <div 
-                        className="h-full rounded-full bg-gradient-to-r from-brand-400 to-brand-600 absolute left-0 top-0 flex"
-                        style={{ width: `${skill.level}%` }}
-                      >
-                        <span className="absolute inset-0 bg-white/20 animate-pulse-subtle"></span>
-                      </div>
-                    </div>
+                    <h3 className="ml-4 text-lg font-semibold text-gray-900 dark:text-white">
+                      {skill.name}
+                    </h3>
                   </div>
+                  <span className="px-3 py-1 rounded-full text-sm font-medium bg-white dark:bg-gray-600 text-gray-700 dark:text-gray-300">
+                    {skill.level}%
+                  </span>
+                </div>
+
+                <p className="text-gray-600 dark:text-gray-300 text-sm mb-4">
+                  {skill.description[language]}
+                </p>
+
+                <div className="relative h-2 bg-gray-200 dark:bg-gray-600 rounded-full overflow-hidden">
+                  <div 
+                    className="absolute h-full left-0 top-0 rounded-full transition-all duration-1000 ease-out"
+                    style={{ 
+                      width: `${skill.level}%`,
+                      backgroundColor: skill.color
+                    }}
+                  ></div>
                 </div>
               </div>
-            ))}
-          </div>
+            </div>
+          ))}
         </div>
-        
+
         {/* Sección de habilidades adicionales y lenguajes */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16">
-          {/* Habilidades adicionales - REDISEÑADO */}
-          <div className="animate-on-scroll opacity-0 transition-all duration-700 delay-500">
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-100 dark:border-gray-700 p-6 h-full">
-              <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-6 flex items-center border-b border-gray-100 dark:border-gray-700 pb-4">
-                <svg className="w-5 h-5 mr-3 text-brand-500 dark:text-brand-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"></path>
-                </svg>
-                {language === 'es' ? 'Tecnologías & Herramientas' : 'Technologies & Tools'}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-16">
+          {/* Habilidades adicionales */}
+          <div className="lg:col-span-2 animate-on-scroll opacity-0">
+            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md p-8">
+              <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-6 flex items-center">
+                <FaTools className="w-6 h-6 mr-3 text-brand-500" />
+                {language === 'es' ? 'Tecnologías Adicionales' : 'Additional Technologies'}
               </h3>
               
               <div className="flex flex-wrap gap-3">
-                {additionalSkills.map((skill, index) => (
+                {additionalSkills.map((skill) => (
                   <span 
-                    key={skill}
-                    className="transition-all duration-300 transform px-3 py-1.5 bg-gray-50 dark:bg-gray-700 text-gray-800 dark:text-gray-200 rounded-md text-sm font-medium border border-gray-200 dark:border-gray-600 hover:bg-brand-50 hover:text-brand-600 dark:hover:text-brand-300 dark:hover:border-brand-500/30"
-                    style={{ transitionDelay: `${30 * index}ms` }}
+                    key={skill.name}
+                    className="flex items-center px-4 py-2 rounded-lg text-sm font-medium bg-white dark:bg-gray-800 shadow-sm hover:shadow-md transition-all duration-300 hover:-translate-y-0.5"
+                    style={{ 
+                      color: skill.color,
+                      backgroundColor: `${skill.color}10`
+                    }}
                   >
-                    {skill}
+                    <span className="mr-2">{skill.icon}</span>
+                    {skill.name}
                   </span>
                 ))}
               </div>
             </div>
           </div>
           
-          {/* Lenguajes - REDISEÑADO */}
-          <div className="animate-on-scroll opacity-0 transition-all duration-700 delay-600">
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-100 dark:border-gray-700 p-6 h-full">
-              <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-6 flex items-center border-b border-gray-100 dark:border-gray-700 pb-4">
-                <svg className="w-5 h-5 mr-3 text-brand-500 dark:text-brand-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129"></path>
-                </svg>
+          {/* Idiomas */}
+          <div className="animate-on-scroll opacity-0">
+            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md p-8">
+              <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-6 flex items-center">
+                <FaLanguage className="w-6 h-6 mr-3 text-brand-500" />
                 {language === 'es' ? 'Idiomas' : 'Languages'}
               </h3>
               
-              <div className="space-y-8">
-                {/* Español */}
-                <div className="relative">
-                  <div className="flex justify-between mb-4">
-                    <div className="flex items-center">
-                      <div className="w-10 h-10 rounded-md bg-gradient-to-br from-red-500 to-yellow-500 text-white flex items-center justify-center font-bold shadow-sm">
-                        ES
+              <div className="space-y-6">
+                {languages.map((lang) => (
+                  <div key={lang.code} className="relative">
+                    <div className="flex items-center mb-3">
+                      <div className="w-12 h-12 rounded-lg bg-brand-500 text-white flex items-center justify-center font-bold">
+                        {lang.code}
                       </div>
-                      <div className="ml-3">
+                      <div className="ml-4">
                         <div className="text-lg font-medium text-gray-900 dark:text-white">
-                          {language === 'es' ? 'Español' : 'Spanish'}
+                          {lang.name}
                         </div>
                         <div className="text-sm text-gray-500 dark:text-gray-400">
-                          {language === 'es' ? 'Nativo' : 'Native'}
+                          {lang.status}
+                        </div>
+                      </div>
+                      <div className="ml-auto">
+                        <div className="text-2xl font-bold text-brand-500">
+                          {lang.level}%
                         </div>
                       </div>
                     </div>
-                    <div className="text-right">
-                      <div className="text-2xl font-bold text-brand-500 dark:text-brand-300">100%</div>
+                    <div className="h-3 bg-gray-200 dark:bg-gray-600 rounded-full overflow-hidden">
+                      <div 
+                        className="h-full bg-brand-500 transition-all duration-1000 ease-out"
+                        style={{ width: `${lang.level}%` }}
+                      ></div>
                     </div>
                   </div>
-                  <div className="h-2 bg-gray-100 dark:bg-gray-700 rounded-full overflow-hidden">
-                    <div className="h-full bg-gradient-to-r from-red-500 to-yellow-500 w-full"></div>
-                  </div>
-                </div>
-                
-                {/* Inglés */}
-                <div className="relative">
-                  <div className="flex justify-between mb-4">
-                    <div className="flex items-center">
-                      <div className="w-10 h-10 rounded-md bg-gradient-to-br from-blue-500 to-red-500 text-white flex items-center justify-center font-bold shadow-sm">
-                        EN
-                      </div>
-                      <div className="ml-3">
-                        <div className="text-lg font-medium text-gray-900 dark:text-white">
-                          {language === 'es' ? 'Inglés' : 'English'}
-                        </div>
-                        <div className="text-sm text-gray-500 dark:text-gray-400">
-                          {language === 'es' ? 'Profesional' : 'Professional'}
-                        </div>
-                      </div>
-                    </div>
-                    <div className="text-right">
-                      <div className="text-2xl font-bold text-brand-500 dark:text-brand-300">85%</div>
-                    </div>
-                  </div>
-                  <div className="h-2 bg-gray-100 dark:bg-gray-700 rounded-full overflow-hidden">
-                    <div className="h-full bg-gradient-to-r from-blue-500 to-red-500 w-[85%]"></div>
-                  </div>
-                </div>
+                ))}
               </div>
             </div>
           </div>
         </div>
-        
-        {/* Bloque de metodologías de trabajo - REDISEÑADO */}
-        <div className="animate-on-scroll opacity-0 transition-all duration-700 delay-700">
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-100 dark:border-gray-700 p-6">
-            <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-6 flex items-center border-b border-gray-100 dark:border-gray-700 pb-4">
-              <svg className="w-5 h-5 mr-3 text-brand-500 dark:text-brand-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
-              </svg>
+
+        {/* Metodologías */}
+        <div className="animate-on-scroll opacity-0">
+          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md p-8">
+            <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-6 flex items-center">
+              <FaSyncAlt className="w-6 h-6 mr-3 text-brand-500" />
               {language === 'es' ? 'Metodologías y Prácticas' : 'Methodologies & Practices'}
             </h3>
             
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-4">
-              {[
-                { name: language === 'es' ? 'Metodologías Ágiles' : 'Agile Methodologies', icon: '🔄' },
-                { name: 'Scrum', icon: '📊' },
-                { name: 'Kanban', icon: '📋' },
-                { name: language === 'es' ? 'Desarrollo TDD' : 'TDD Development', icon: '🧪' },
-                { name: language === 'es' ? 'Código Limpio' : 'Clean Code', icon: '✨' },
-                { name: language === 'es' ? 'Integración Continua' : 'Continuous Integration', icon: '🔄' }
-              ].map((method, index) => (
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
+              {methodologies.map((method) => (
                 <div 
-                  key={method.name} 
-                  className="flex flex-col items-center text-center p-4 rounded-lg bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 transition-all duration-300 hover:bg-brand-50 dark:hover:bg-gray-600 hover:border-brand-200 dark:hover:border-brand-500/40 group"
+                  key={method.name}
+                  className="group relative p-6 rounded-xl text-center transition-all duration-300 hover:shadow-md hover:-translate-y-1 bg-white dark:bg-gray-800 shadow-sm"
+                  style={{ 
+                    backgroundColor: `${method.color}10`
+                  }}
                 >
-                  <span className="text-2xl mb-2 group-hover:scale-110 transition-transform duration-300">{method.icon}</span>
-                  <span className="text-gray-700 dark:text-gray-300 font-medium text-sm group-hover:text-brand-600 dark:group-hover:text-brand-300 transition-colors duration-300">{method.name}</span>
+                  <div 
+                    className="text-3xl mb-3 transition-transform duration-300 group-hover:scale-110"
+                    style={{ color: method.color }}
+                  >
+                    {method.icon}
+                  </div>
+                  <div className="text-sm font-medium text-gray-900 dark:text-white">
+                    {method.name}
+                  </div>
                 </div>
               ))}
             </div>
           </div>
         </div>
       </div>
-      
-      {/* Estilos adicionales para animaciones */}
+
       <style>{`
-        @keyframes width {
-          from { width: 0; }
-          to { width: 100px; }
+        .animate-on-scroll {
+          opacity: 0;
+          transform: translateY(20px);
+          transition: opacity 0.6s ease-out, transform 0.6s ease-out;
         }
         
-        .animate-width {
-          animation: width 1.5s forwards ease-out;
+        .animate-on-scroll.show {
+          opacity: 1;
+          transform: translateY(0);
         }
-        
-        @keyframes pulse-subtle {
-          0%, 100% { opacity: 0; }
-          50% { opacity: 0.5; }
-        }
-        
-        .animate-pulse-subtle {
-          animation: pulse-subtle 2s infinite;
+
+        @keyframes fadeIn {
+          from {
+            opacity: 0;
+            transform: translateY(20px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
         }
       `}</style>
     </section>

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Mi Portafolio | Desarrollador Full Stack</title>
+    <meta name="description" content="Portafolio profesional de desarrollador full stack con experiencia en React, Node.js y más tecnologías web modernas." />
+    <script>
+      // Verificar tema oscuro e idioma al cargar la página
+      if (localStorage.getItem('darkMode') === 'true' || 
+        (!localStorage.getItem('darkMode') && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+        document.documentElement.classList.add('dark');
+      } else {
+        document.documentElement.classList.remove('dark');
+      }
+      
+      // Establecer el idioma preferido
+      const savedLanguage = localStorage.getItem('language');
+      if (savedLanguage) {
+        document.documentElement.lang = savedLanguage;
+      } else {
+        // Si no hay idioma guardado, detectar el del navegador y preferir español
+        const userLanguage = navigator.language || navigator.userLanguage;
+        const defaultLanguage = userLanguage.startsWith('es') ? 'es' : 'en';
+        document.documentElement.lang = defaultLanguage;
+        localStorage.setItem('language', defaultLanguage);
+      }
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html> 
